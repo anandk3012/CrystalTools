@@ -33,7 +33,7 @@ export default function BrillouinCalculator() {
             const x = vertices.map((v: number[]) => v[0]);
             const y = vertices.map((v: number[]) => v[1]);
             const z = vertices.map((v: number[]) => v[2]);
-            
+
             const meshData = {
                 type: 'mesh3d',
                 x,
@@ -56,7 +56,7 @@ export default function BrillouinCalculator() {
 
     return (
         <div className="min-h-screen bg-black flex flex-col mt-10">
-            <div className="flex-grow container mx-auto px-4 mt-16">
+            <div className="flex-grow container mx-auto px-4 mt-16 w-[85%]">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Input Form */}
                     <div className="bg-gray-900 p-6 border-2 border-gray-800 rounded-lg">
@@ -101,7 +101,9 @@ export default function BrillouinCalculator() {
 
                     {/* Results Display */}
                     <div className="lg:col-span-2 space-y-8 mb">
-                        <div className=" bg-gray-900 rounded-lg h-[32rem]">
+                        <div className=" bg-gray-900 rounded-lg border-2 border-gray-800 h-[32rem] p-3">
+                            <h2 className="text-xl font-bold text-white mb-6">Brillouin Zone</h2>
+
                             <Plot
                                 data={plotData}
                                 layout={{
@@ -120,7 +122,7 @@ export default function BrillouinCalculator() {
 
                                 }}
                                 config={{ responsive: true }}
-                                className="w-full h-full mx-auto my-auto border-2 border-gray-800 rounded-lg"
+                                className="w-full h-full mx-auto my-auto  rounded-lg"
                             />
                         </div>
 

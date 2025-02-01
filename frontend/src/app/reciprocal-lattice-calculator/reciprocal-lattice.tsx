@@ -87,8 +87,7 @@ export default function ReciprocalLattice() {
     );
 
     return (
-        <div className="min-h-screen bg-black flex flex-col">
-            <Navbar />
+        <div className=" bg-black flex flex-col w-[80%]">
             <div className="flex-grow container mx-auto px-4 mt-16">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Input Section */}
@@ -139,7 +138,8 @@ export default function ReciprocalLattice() {
                     <div className="lg:col-span-2 space-y-8">
                         {latticeData && (
                             <>
-                                <div className="bg-gray-900 rounded-lg h-[32rem] ">
+                                <div className="bg-gray-900 rounded-lg border-2 border-gray-800 p-3 h-[32rem] ">
+                                    <h2 className="text-xl font-bold text-white mb-6">Reciprocal Lattice</h2>
                                     <Plot
                                         data={[{
                                             x: latticeData.reciprocal_lattice.x,
@@ -147,8 +147,8 @@ export default function ReciprocalLattice() {
                                             z: latticeData.reciprocal_lattice.z,
                                             mode: "markers",
                                             type: "scatter3d",
-                                            marker: { 
-                                                color: '#FF00FF', 
+                                            marker: {
+                                                color: '#FF00FF',
                                                 size: 8,
                                                 opacity: 0.8
                                             }
@@ -159,20 +159,20 @@ export default function ReciprocalLattice() {
                                             font: { color: '#fff' },
                                             scene: {
                                                 aspectmode: 'data',
-                                                xaxis: { 
-                                                    title: 'X', 
+                                                xaxis: {
+                                                    title: 'X',
                                                     gridcolor: '#444',
                                                     titlefont: { color: '#fff' },
                                                     tickfont: { color: '#fff' }
                                                 },
-                                                yaxis: { 
-                                                    title: 'Y', 
+                                                yaxis: {
+                                                    title: 'Y',
                                                     gridcolor: '#444',
                                                     titlefont: { color: '#fff' },
                                                     tickfont: { color: '#fff' }
                                                 },
-                                                zaxis: { 
-                                                    title: 'Z', 
+                                                zaxis: {
+                                                    title: 'Z',
                                                     gridcolor: '#444',
                                                     titlefont: { color: '#fff' },
                                                     tickfont: { color: '#fff' }
@@ -181,11 +181,11 @@ export default function ReciprocalLattice() {
                                             },
                                             margin: { t: 40 }
                                         }}
-                                        config={{ 
+                                        config={{
                                             responsive: true,
                                             displaylogo: false
                                         }}
-                                        className="w-full h-full mx-auto my-auto border-2 border-gray-800 rounded-lg"
+                                        className="w-full h-full mx-auto my-auto  rounded-lg"
                                     />
                                 </div>
 
