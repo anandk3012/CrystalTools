@@ -37,20 +37,17 @@ def generate_lattice_points(v1, v2, v3, n=2):
 def calculate_lattice():
     try:
         data = request.get_json()
-        
-        # Get lattice vectors and spacing
         spacing = float(data.get('spacing', 1.0))
         a1 = np.array(data['a1']) * spacing
         a2 = np.array(data['a2']) * spacing
         a3 = np.array(data['a3']) * spacing
-        
-        # Calculate reciprocal lattice vectors
-        b1, b2, b3 = reciprocal_lattice_vectors(a1, a2, a3)
-        
-        # Generate reciprocal lattice points
+
+        try:
+            b1, b2, b3 = reciprocal_lattice_vectors(a1, a2, a3)
+        except ValueError as ve:
+            return jsonify({'error': str(ve)}), 400
+
         reciprocal_points = generate_lattice_points(b1, b2, b3)
-        
-        # Format response
         response = {
             'reciprocal_lattice': {
                 'x': reciprocal_points[:, 0].tolist(),
@@ -63,12 +60,11 @@ def calculate_lattice():
                 'b3': b3.tolist()
             }
         }
-        
         return jsonify(response)
-    
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
+    
+    
 @app.route('/calculate_brillouin', methods=['POST'])
 def calculate_brillouin():
     try:

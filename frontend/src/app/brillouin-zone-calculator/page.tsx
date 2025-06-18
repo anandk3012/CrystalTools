@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import Plot from 'react-plotly.js';
+import dynamic from 'next/dynamic';
+
+const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
+
 import axios from 'axios';
-import Navbar from "@/components/Navbar";
 
 interface Vector3D {
     x: number;
@@ -22,7 +24,7 @@ export default function BrillouinCalculator() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/calculate_brillouin', {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/calculate_brillouin`, {
                 a1: [a1.x, a1.y, a1.z],
                 a2: [a2.x, a2.y, a2.z],
                 a3: [a3.x, a3.y, a3.z],
@@ -55,15 +57,15 @@ export default function BrillouinCalculator() {
     };
 
     return (
-        <div className="min-h-screen bg-black flex flex-col mt-10">
+        <div className="min-h-screen bg-black flex flex-col mt-10 pb-10">
             <div className="flex-grow container mx-auto px-4 mt-16 w-[85%]">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Input Form */}
                     <div className="bg-gray-900 p-6 border-2 border-gray-800 rounded-lg">
                         <h2 className="text-xl font-bold text-white mb-6">Lattice Parameters</h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            {[['a1', a1, setA1], ['a2', a2, setA2], ['a3', a3, setA3]].map(([label, vec, setVec]) => (
-                                <div key={label as string} className="space-y-2">
+                            {([['a1', a1, setA1], ['a2', a2, setA2], ['a3', a3, setA3]] as [string, Vector3D, React.Dispatch<React.SetStateAction<Vector3D>>][]).map(([label, vec, setVec]) => (
+                                <div key={label} className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-300">{label}</label>
                                     {['x', 'y', 'z'].map((coord) => (
                                         <input
@@ -118,8 +120,7 @@ export default function BrillouinCalculator() {
                                     paper_bgcolor: 'rgba(0,0,0,0)',
                                     font: { color: '#fff' },
                                     margin: { t: 20 },
-                                    autosize: { responsive: true }
-
+                                    autosize: true
                                 }}
                                 config={{ responsive: true }}
                                 className="w-full h-full mx-auto my-auto  rounded-lg"

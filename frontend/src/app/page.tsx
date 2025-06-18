@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black flex flex-col">
+    <div className="min-h-screen bg-black flex flex-col pb-10">
       <div className="flex-grow flex items-center justify-center py-10 px-4 mt-16">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-white mb-4">
