@@ -12,46 +12,54 @@ const PhaseGroupVelocityVisualizer = () => {
   const [selectedCase, setSelectedCase] = useState("vp-pos-vg-neg");
 
   return (
-    <div className="p-[1rem] w-full ">
-      <h1 className="text-3xl font-bold mb-4 text-center">
+    <div className="p-4 w-full max-w-3xl mx-auto">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-center">
         Phase and Group Velocity Visualizer
       </h1>
 
-      <select
-        value={selectedCase}
-        onChange={(e) => setSelectedCase(e.target.value)}
-        className="mb-4 p-2 border border-gray-300 rounded-md text-black mx-auto"
-      >
-         {caseOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <div className="mb-4 flex justify-center">
+        <select
+          value={selectedCase}
+          onChange={(e) => setSelectedCase(e.target.value)}
+          className="p-2 border border-gray-300 rounded-md text-black w-full max-w-xs"
+        >
+          {caseOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      {/* <div className="relative pb-40 h-0 overflow-auto border-black border-1 border-solid border-r-8" > */}
+      {/* Responsive wrapper */}
       <div
+        className="relative w-full overflow-hidden rounded-lg border border-gray-300"
         style={{
-          position: "relative",
-          paddingBottom: "56.25%",
-          height: 0,
-          overflow: "hidden",
-          border: "1px solid #ccc",
-          borderRadius: "8px",
+          // Mobile = portrait-ish (4:5), Desktop = landscape (16:9)
+          paddingBottom: "125%", // fallback
         }}
       >
-        <iframe
-          src={`/animations/${selectedCase}.html`}
-          title={`Visualizer for ${selectedCase}`}
+        <div
+          className="absolute top-0 left-0 w-full h-full"
           style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            border: "none",
+            aspectRatio: "16/9",
           }}
-        />
+        >
+          <iframe
+            src={`/animations/${selectedCase}.html`}
+            title={`Visualizer for ${selectedCase}`}
+            className="w-full h-full border-none"
+          />
+        </div>
+
+        {/* Fallback for mobile where aspect-ratio might not be supported */}
+        <style jsx>{`
+          @media (max-width: 767px) {
+            div[style*="aspectRatio"] {
+              aspect-ratio: 4 / 5;
+            }
+          }
+        `}</style>
       </div>
     </div>
   );
