@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 
 import axios from 'axios';
-import Navbar from '@/components/Navbar';
 
 type NumericVec3 = [number, number, number];
 type InputVec3 = [string, string, string];
@@ -152,7 +151,6 @@ export default function ReciprocalLattice() {
 
   return (
     <>
-      <Navbar />
 
       {/* modal */}
       {showErrorModal && (
