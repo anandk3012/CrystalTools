@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
 from scipy.spatial import Voronoi, ConvexHull
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -12,12 +13,14 @@ def generate_reciprocal_points(b1, b2, b3, n=1):
     for i in range(-n, n+1):
         for j in range(-n, n+1):
             for k in range(-n, n+1):
-                points.append(i*b1 + j*b2 + k*b3)
+                points.append(i * b1 + j * b2 + k * b3)
     return np.array(points)
 
 def reciprocal_lattice_vectors(a1, a2, a3):
     """Compute reciprocal lattice vectors given direct lattice vectors."""
     volume = np.dot(a1, np.cross(a2, a3))
+    if volume == 0:
+        raise ValueError("Volume of the unit cell is zero. Invalid lattice vectors.")
     b1 = 2.0 * np.pi * np.cross(a2, a3) / volume
     b2 = 2.0 * np.pi * np.cross(a3, a1) / volume
     b3 = 2.0 * np.pi * np.cross(a1, a2) / volume
@@ -63,8 +66,7 @@ def calculate_lattice():
         return jsonify(response)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
-    
+
 @app.route('/calculate_brillouin', methods=['POST'])
 def calculate_brillouin():
     try:
@@ -76,18 +78,18 @@ def calculate_brillouin():
 
         b1, b2, b3 = reciprocal_lattice_vectors(a1, a2, a3)
         points = generate_reciprocal_points(b1, b2, b3, n=1)
-        
+
         vor = Voronoi(points)
         origin_idx = np.where(np.all(np.isclose(points, 0), axis=1))[0][0]
         region_idx = vor.point_region[origin_idx]
         region = vor.regions[region_idx]
-        
+
         if -1 in region or len(region) == 0:
             return jsonify({'error': 'Invalid Brillouin zone calculation'}), 400
-            
+
         vertices = vor.vertices[region]
         hull = ConvexHull(vertices)
-        
+
         return jsonify({
             'vertices': vertices.tolist(),
             'simplices': hull.simplices.tolist(),
@@ -97,10 +99,10 @@ def calculate_brillouin():
                 'b3': b3.tolist()
             }
         })
-    
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
