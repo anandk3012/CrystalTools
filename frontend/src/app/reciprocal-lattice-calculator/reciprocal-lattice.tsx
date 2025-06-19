@@ -93,7 +93,7 @@ export default function ReciprocalLattice() {
 
     setLoading(true);
     try {
-      const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const base = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
       const resp = await axios.post<LatticeData>(
         `${base}/calculate_lattice`,
         { spacing: spacingNum, a1, a2, a3 },
