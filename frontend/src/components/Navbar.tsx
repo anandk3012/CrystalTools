@@ -97,6 +97,20 @@ const Navbar = () => {
               >
                 Reciprocal Calculator
               </Link>
+              <Link
+                href="/brillouin-zone-calculator"
+                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Brillouin Calculator
+              </Link>
+              <Link
+                href="/phase-group-velocity"
+                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Phase & Group Velocity Visualizer
+              </Link>
             </div>
           </div>
         )}
